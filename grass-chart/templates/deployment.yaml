@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grass
+spec:
+  selector:
+    matchLabels:
+      app: grass
+  template:
+    metadata:
+      labels:
+        app: grass
+    spec:
+      containers:
+      - name: grass
+        image: mrcolorrain/grass
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5900
+        - containerPort: 6080
+        env:
+          - name: GRASS_USER
+            valueFrom:
+              secretKeyRef:
+                name: grass-credentials
+                key: username
+          - name: GRASS_PASS
+            valueFrom:
+              secretKeyRef:
+                name: grass-credentials
+                key: password
